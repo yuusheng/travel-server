@@ -1,0 +1,28 @@
+{
+  "name": "travel-server",
+  "version": "1.0.0",
+  "description": "The travel project server side with koa2",
+  "main": "app.js",
+  "scripts": {
+    "serve": "node app.js",
+    "nodemon": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuusheng/travel-server.git"
+  },
+  "keywords": [
+    "koa",
+    "node"
+  ],
+  "author": "yuusheng <contact@yuusheng.cn>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yuusheng/travel-server/issues"
+  },
+  "homepage": "https://github.com/yuusheng/travel-server#readme",
+  "dependencies": {
+    "koa": "^2.13.4",
+    "koa-router": "^10.1.1"
+  }
+}
