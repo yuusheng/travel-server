@@ -4,8 +4,8 @@
   "description": "The travel project server side with koa2",
   "main": "app.js",
   "scripts": {
-    "serve": "node app.js",
-    "nodemon": "nodemon app.js"
+    "start": "node app.js",
+    "serve": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/yuusheng/travel-server#readme",
   "dependencies": {
     "koa": "^2.13.4",
-    "koa-router": "^10.1.1"
+    "koa-router": "^10.1.1",
+    "mongoose": "^6.2.6"
   }
 }
