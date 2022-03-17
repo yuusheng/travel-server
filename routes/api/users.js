@@ -40,7 +40,7 @@ router.post('/login', async (ctx) => {
         avatar,
       }
       // generate token
-      const token = jwt.sign(payload, keys, { expiresIn: 3600 })
+      const token = jwt.sign(payload, keys, { expiresIn: 3600 * 24 * 7 })
       ctx.status = 200
       ctx.body = {
         success: true,
