@@ -1,6 +1,6 @@
 {
   "name": "travel-server",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "The travel project server side with koa2",
   "main": "app.js",
   "scripts": {
@@ -22,8 +22,17 @@
   },
   "homepage": "https://github.com/yuusheng/travel-server#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "gravatar": "^1.8.2",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-jwt": "^4.0.3",
     "koa-router": "^10.1.1",
     "mongoose": "^6.2.6"
+  },
+  "devDependencies": {
+    "koa-passport": "^4.1.4",
+    "passport-jwt": "^4.0.0"
   }
 }
