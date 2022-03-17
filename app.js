@@ -5,8 +5,7 @@ const db = require('./config/keys').mongoURI
 const bodyParser = require('koa-bodyparser')
 const passport = require('koa-passport')
 
-const user = require('./routes/api/users')
-//实例化koa对象
+// 实例化koa对象
 const app = new koa()
 const router = new Router()
 
@@ -19,7 +18,6 @@ app.use(passport.session())
 router.get('/', async (ctx) => {
   ctx.body = { msg: 'Hello koa Interface' }
 })
-router.use('/api/users', user)
 
 // 连接数据库
 mongoose
@@ -32,6 +30,11 @@ mongoose
   })
 // 配置路由
 app.use(router.routes()).use(router.allowedMethods())
+// 配置路由
+const user = require('./routes/api/users')
+router.use('/api/users', user)
+const profile = require('./routes/api/profile')
+router.use('/api/profile', profile)
 
 const port = process.env.PORT || 4000
 
