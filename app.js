@@ -30,11 +30,15 @@ mongoose
   })
 // 配置路由
 app.use(router.routes()).use(router.allowedMethods())
+// 自定路由
+const routes = require('./routes/api')
+app.use(routes.routes()).use(routes.allowedMethods())
+
 // 配置路由
-const user = require('./routes/api/users')
-router.use('/api/users', user)
-const profile = require('./routes/api/profile')
-router.use('/api/profile', profile)
+// const user = require('./routes/api/users')
+// router.use('/api/users', user)
+// const profile = require('./routes/api/profile')
+// router.use('/api/profile', profile)
 
 const port = process.env.PORT || 4000
 

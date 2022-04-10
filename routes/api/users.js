@@ -3,10 +3,12 @@ const router = new Router()
 const bcrypt = require('bcryptjs')
 const gravatar = require('gravatar')
 const jwt = require('jsonwebtoken')
-const keys = require('../../config/keys').secretOrKey
-
-const User = require('../../models/User')
 const passport = require('koa-passport')
+
+const keys = require('../../config/keys').secretOrKey
+const { expiresTime } = require('../../config/keys')
+// model
+const User = require('../../models/User')
 
 router.get('/test', async (ctx) => {
   ctx.status = 200
@@ -26,7 +28,7 @@ router.post('/login', async (ctx) => {
 
   // do not exist
   if (!user.length) {
-    ctx.status = 404
+    ctx.status = 200
     ctx.body = { email: '用户不存在' }
   } else {
     const { id, name, password, avatar } = user[0]
@@ -40,7 +42,7 @@ router.post('/login', async (ctx) => {
         avatar,
       }
       // generate token
-      const token = jwt.sign(payload, keys, { expiresIn: 3600 * 24 * 7 })
+      const token = jwt.sign(payload, keys, { expiresIn: expiresTime })
       ctx.status = 200
       ctx.body = {
         success: true,
