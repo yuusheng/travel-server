@@ -1,6 +1,9 @@
 // const passport = require('koa-passport')
 const Router = require('koa-router')
 const router = new Router()
+const fs = require('fs')
+const mime = require('mime-types')
+const path = require('path')
 const Tag = require('../../models/Tags')
 const Article = require('../../models/Article')
 
@@ -15,7 +18,7 @@ router.get('/test', async (ctx) => {
 /**文章详情
  * @query id
  */
-router.get('/:id', async (ctx) => {
+router.get('/detail/:id', async (ctx) => {
   if (!ctx.params.id) {
     ctx.status = 200
     ctx.body = { msg: '文章不存在!' }
@@ -51,8 +54,9 @@ router.get('/:id', async (ctx) => {
 // 发布文章
 router.post('/', async (ctx) => {
   // const { title, author, content, meta } = ctx.request.body
-  console.log(ctx.request.body)
-  const newArticle = new Article(ctx.request.body)
+  // console.log(ctx.request.body)
+  let length = ctx.request.body.content.length
+  const newArticle = new Article(ctx.request.body, length)
   await newArticle
     .save()
     .then((article) => {
@@ -67,6 +71,30 @@ router.patch('/', async (ctx) => {
   const id = ctx.params.id
   const article = Article.findOne({ id })
   console.log(article)
+})
+
+// 上传图片
+router.post('/head-img', (ctx) => {
+  const file = ctx.request.files.file
+  const baseName = path.basename(file.path)
+  ctx.body = { url: `${ctx.origin}/uploads/${baseName}` }
+})
+
+const { dir } = require('../../public/uploads/dir')
+router.get('/head-img', (ctx) => {
+  console.log(ctx.query.path)
+  let filePath = path.join(dir, ctx.query.path)
+  let file = null
+  try {
+    file = fs.readFileSync(filePath)
+  } catch (err) {
+    filePath = path.join(dir, 'default.jpg')
+    file = fs.readFileSync(filePath)
+  }
+
+  let mimeType = mime.lookup(filePath)
+  ctx.set('content-type', mimeType)
+  ctx.body = file
 })
 
 module.exports = router.routes()

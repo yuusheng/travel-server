@@ -1,9 +1,12 @@
 const koa = require('koa')
 const Router = require('koa-router')
 const mongoose = require('mongoose')
+const koaBody = require('koa-body')
+const koaStatic = require('koa-static')
 const db = require('./config/keys').mongoURI
 const bodyParser = require('koa-bodyparser')
 const passport = require('koa-passport')
+const path = require('path')
 
 // 实例化koa对象
 const app = new koa()
@@ -14,6 +17,19 @@ app.use(bodyParser())
 require('./config/passport')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
+// 文件上传
+app
+  .use(
+    koaBody({
+      multipart: true, // 文件支持格式
+      formidable: {
+        // 不要使用相对路径
+        uploadDir: path.resolve(__dirname, 'public/uploads'), // 上传目录
+        keepExtensions: true, // 设置文件后缀名保留
+      },
+    })
+  )
+  .use(koaStatic(path.join(__dirname), 'public'))
 
 router.get('/', async (ctx) => {
   ctx.body = { msg: 'Hello koa Interface' }
