@@ -4,8 +4,8 @@ const router = new Router()
 const fs = require('fs')
 const mime = require('mime-types')
 const path = require('path')
-const Tag = require('../../models/Tags')
-const Article = require('../../models/Article')
+const Tag = require('../models/Tags')
+const Article = require('../models/Article')
 
 /**
  * 测试
@@ -80,7 +80,7 @@ router.post('/head-img', (ctx) => {
   ctx.body = { url: `${ctx.origin}/uploads/${baseName}` }
 })
 
-const { dir } = require('../../public/uploads/dir')
+const { dir } = require('../public/dir')
 router.get('/head-img', (ctx) => {
   console.log(ctx.query.path)
   let filePath = path.join(dir, ctx.query.path)
@@ -88,7 +88,7 @@ router.get('/head-img', (ctx) => {
   try {
     file = fs.readFileSync(filePath)
   } catch (err) {
-    filePath = path.join(dir, 'default.jpg')
+    filePath = path.join(dir, '/img/default.jpg')
     file = fs.readFileSync(filePath)
   }
 

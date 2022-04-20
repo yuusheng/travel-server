@@ -15,6 +15,10 @@ router.get('/test', async (ctx) => {
   ctx.body = { msg: 'user works...' }
 })
 
+router.post('/test', async (ctx) => {
+  console.log(ctx.request.body)
+})
+
 /**
  * * POST /api/users/login
  * @desc login

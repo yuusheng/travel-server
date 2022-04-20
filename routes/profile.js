@@ -1,7 +1,7 @@
 const passport = require('koa-passport')
 const Router = require('koa-router')
 const router = new Router()
-const Profile = require('../../models/Profile')
+const Profile = require('../models/Profile')
 
 /** GET /api/profile/test
  * @desc login

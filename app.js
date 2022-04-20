@@ -13,7 +13,6 @@ const app = new koa()
 const router = new Router()
 
 // 配置中间件
-app.use(bodyParser())
 require('./config/passport')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
@@ -30,6 +29,7 @@ app
     })
   )
   .use(koaStatic(path.join(__dirname), 'public'))
+// app.use(bodyParser())
 
 router.get('/', async (ctx) => {
   ctx.body = { msg: 'Hello koa Interface' }
@@ -47,7 +47,7 @@ mongoose
 // 配置路由
 app.use(router.routes()).use(router.allowedMethods())
 // 自定路由
-const routes = require('./routes/api')
+const routes = require('./routes')
 app.use(routes.routes()).use(routes.allowedMethods())
 
 // 配置路由
