@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer')
 const { user, pass } = require('../../config/keys')
 const dayjs = require('dayjs')
 
-function mail(ctx) {
+async function mail(ctx) {
   let targetAddress = ctx.request.body.email
   let code = ctx.request.code
   // create reusable transporter object using the default SMTP transport

@@ -6,6 +6,7 @@ const mime = require('mime-types')
 const path = require('path')
 const Tag = require('../models/Tags')
 const Article = require('../models/Article')
+const controller = require('../controller/ArticleController')
 
 /**
  * 测试
@@ -97,4 +98,5 @@ router.get('/head-img', (ctx) => {
   ctx.body = file
 })
 
+router.get('/:user', controller.getAuthorArticleList)
 module.exports = router.routes()
