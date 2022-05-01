@@ -78,7 +78,7 @@ router.patch('/', async (ctx) => {
 router.post('/head-img', (ctx) => {
   const file = ctx.request.files.file
   const baseName = path.basename(file.path)
-  ctx.body = { url: `${ctx.origin}/uploads/${baseName}` }
+  ctx.body = { success: true, url: `${ctx.origin}/uploads/${baseName}` }
 })
 
 const { dir } = require('../public/dir')
@@ -98,5 +98,5 @@ router.get('/head-img', (ctx) => {
   ctx.body = file
 })
 
-router.get('/:user', controller.getAuthorArticleList)
+router.get('/user/:user', controller.getAuthorArticleList)
 module.exports = router.routes()

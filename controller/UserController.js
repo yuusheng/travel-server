@@ -14,8 +14,9 @@ exports.verifyMail = async (ctx, next) => {
   const findResult = await User.find({ email: ctx.request.body.email })
   if (findResult.length) {
     ctx.body = {
-      email: '邮箱已被占用',
+      msg: '邮箱已被占用',
       success: false,
+      code: 103,
     }
   } else {
     await next()
@@ -30,10 +31,10 @@ exports.verifyCode = async (ctx, next) => {
     if (res.code === ctx.request.body.code) {
       await next()
     } else {
-      ctx.body = { success: false, msg: '验证码错误' }
+      ctx.body = { success: false, code: 104, msg: '验证码错误' }
     }
   } else {
-    ctx.body = { success: false, msg: '验证码过期或不存在' }
+    ctx.body = { success: false, code: 105, msg: '验证码过期或不存在' }
   }
 }
 
@@ -60,6 +61,6 @@ exports.register = async (ctx) => {
       ctx.body = { success: true, user }
     })
     .catch((err) => {
-      ctx.body = { success: false, err }
+      ctx.body = { success: false, msg: err }
     })
 }
