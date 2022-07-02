@@ -38,5 +38,5 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           REMOTE_PORT: 22
           ARGS: '-avzr --delete'
-          SOURCE: './dist/*'
+          SOURCE: './*'
           TARGET: ${{ secrets.REMOTE_TARGET }}
