@@ -39,3 +39,5 @@ jobs:
 
       - name: Test
         run: pnpm run test
+
+      - name: Push to build branch

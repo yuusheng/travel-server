@@ -7,9 +7,6 @@
     "dev": "tsx watch src/app.ts",
     "serve": "nodemon dist/app.js",
     "prd": "pm2 start bin/www --name koa-ts --watch",
-    "stop": "pm2 stop koa-ts",
-    "reload": "pm2 reload koa-ts",
-    "delete": "pm2 delete koa-ts",
     "build": "rm -rf dist && tsc",
     "test": "jest"
   },
