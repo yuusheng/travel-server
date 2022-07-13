@@ -21,6 +21,7 @@ specifiers:
   mongoose: ^6.4.4
   nodemon: ^2.0.19
   pm2: ^5.2.0
+  pnpm: ^7.5.1
   supertest: ^6.2.4
   tsx: ^3.7.1
   typescript: ^4.7.4
@@ -48,6 +49,7 @@ devDependencies:
   jest: registry.npmmirror.com/jest/28.1.2
   nodemon: registry.npmmirror.com/nodemon/2.0.19
   pm2: registry.npmmirror.com/pm2/5.2.0
+  pnpm: registry.npmmirror.com/pnpm/7.5.1
   supertest: registry.npmmirror.com/supertest/6.2.4
   tsx: 3.7.1
   typescript: 4.7.4
@@ -5683,6 +5685,14 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
+    dev: true
+
+  registry.npmmirror.com/pnpm/7.5.1:
+    resolution: {integrity: sha512-/WbI4+V4QLJvMn4mp6dw4q+fbvwIyLTr7qmkoCpqs/xIYMpVXA3wdkvI5I9O9k1DJfYNuH8yY7Uf4vCCEdObJw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/pnpm/-/pnpm-7.5.1.tgz}
+    name: pnpm
+    version: 7.5.1
+    engines: {node: '>=14.6'}
+    hasBin: true
     dev: true
 
   registry.npmmirror.com/prelude-ls/1.1.2:
