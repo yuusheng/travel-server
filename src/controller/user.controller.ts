@@ -7,4 +7,4 @@ class User {
   }
 }
 
-export const UserController = new User()
+export const userController = new User()
