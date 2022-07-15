@@ -5,23 +5,12 @@ import koaStatic from 'koa-static'
 import jwt from 'koa-jwt'
 import router from './routes'
 import path from 'path'
-import { config, custom } from './utils'
+import { config, custom, jwtErrorHandler } from './utils'
 import mongoose from 'mongoose'
 
 const app = new Koa()
 
-app.use(async (ctx, next) => {
-  return next().catch((err) => {
-    if (err.status === 401) {
-      ctx.status = 401
-      ctx.body = {
-        error: err.originalError ? err.originalError.message : err.message,
-      }
-    } else {
-      throw err
-    }
-  })
-})
+app.use(jwtErrorHandler)
 
 app.use(
   jwt({
