@@ -21,7 +21,6 @@ class UserController {
         // check password
         const result = bcrypt.compareSync(ctx.request.body.password, password)
         if (result) {
-          // * return token
           const payload = {
             id,
             name,
@@ -47,6 +46,12 @@ class UserController {
       ctx.body = { msg: '数据库出错', code: 106, success: false }
       return
     }
+  }
+
+  async current(ctx: KoaCtx) {
+    let { id, name, avatar, email } = ctx.state.user
+    avatar = avatar.slice(2)
+    ctx.body = { id, name, avatar, email }
   }
 }
 

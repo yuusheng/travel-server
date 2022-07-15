@@ -1,17 +1,11 @@
-import { config } from './secret'
+import { config, requireAuthentication } from './secret'
 import { KoaCtx } from '../types'
 import jwt from 'jsonwebtoken'
 
 export function custom(ctx: KoaCtx) {
-  return true
+  return requireAuthentication.includes(ctx.url) ? false : true
 }
 
-export function generateToken(data: any) {
-  return jwt.sign(
-    {
-      data,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
-    },
-    config.secret
-  )
+export function generateToken(payload: any) {
+  return jwt.sign(payload, config.secret, { expiresIn: config.expiresTime })
 }
