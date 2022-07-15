@@ -17,7 +17,7 @@ class UserController {
         ctx.status = 200
         ctx.body = { success: false, code: 101, msg: '用户不存在' }
       } else {
-        const { id, name, password, avatar } = user[0]
+        const { id, name, password, avatar, email } = user[0]
         // check password
         const result = bcrypt.compareSync(ctx.request.body.password, password)
         if (result) {
@@ -25,6 +25,7 @@ class UserController {
             id,
             name,
             avatar,
+            email,
           }
           // generate token
           const token = generateToken(payload)
@@ -52,6 +53,7 @@ class UserController {
     let { id, name, avatar, email } = ctx.state.user
     avatar = avatar.slice(2)
     ctx.body = { id, name, avatar, email }
+    console.log(ctx.state.user)
   }
 }
 
