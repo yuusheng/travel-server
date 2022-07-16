@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongoose'
 import { Article } from '../models'
 import { KoaCtx } from '../types'
 
