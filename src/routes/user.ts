@@ -1,3 +1,4 @@
+import { auth } from '../utils'
 import Router from 'koa-router'
 import { userController } from '../controller'
 
@@ -9,6 +10,6 @@ router.get('/', async (ctx) => {
 
 router.post('/login', userController.login)
 
-router.get('/current', userController.current)
+router.get('/current', auth, userController.current)
 
 export default router.routes()

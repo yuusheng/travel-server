@@ -1,4 +1,9 @@
-import Koa from 'koa'
+import Koa, { ParameterizedContext } from 'koa'
+import Router from 'koa-router'
 
-export type KoaCtx = Koa.Context
+export type KoaCtx = ParameterizedContext<
+  any,
+  Router.IRouterParamContext<any, {}>,
+  any
+>
 export type KoaNext = Koa.Next

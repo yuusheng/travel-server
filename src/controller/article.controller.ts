@@ -1,5 +1,14 @@
+import { ObjectId } from 'mongoose'
 import { Article } from '../models'
 import { KoaCtx } from '../types'
+
+function getParams(ctx: KoaCtx, get = false) {
+  const articleId = get ? ctx.params.id : ctx.request.body.id
+  let { id, avatar, name }: { id: string; avatar: string; name: string } =
+    ctx.state.user
+
+  return { articleId, id, avatar, name }
+}
 
 class ArticleController {
   async getArticleDetailById(ctx: KoaCtx) {
@@ -51,6 +60,88 @@ class ArticleController {
       }
     } catch (e: any) {
       ctx.body = { success: false, msg: e.message }
+    }
+  }
+
+  async ifLiked(ctx: KoaCtx) {
+    try {
+      const { articleId, id } = getParams(ctx, true)
+      const article = await Article.findOne({ id: articleId })
+
+      const liked = article?.like_users.some((user: any) => user.id === id)
+      const disliked = article?.dislike_users.some(
+        (user: any) => user.id === id
+      )
+
+      ctx.body = { success: true, liked, disliked }
+      ctx.status = 200
+    } catch (e: any) {
+      ctx.status = 500
+      ctx.body = { success: false, message: e.message }
+    }
+  }
+
+  async likeArticle(ctx: KoaCtx) {
+    try {
+      const { articleId, id, avatar, name } = getParams(ctx)
+
+      const article = await Article.findOne({ id: articleId })
+
+      if (article?.like_users.some((user: any) => user.id === id)) {
+        ctx.status = 401
+        ctx.body = { success: false, msg: '请勿重复点赞' }
+      } else {
+        await Article.findOneAndUpdate(
+          { id: ctx.request.body.id },
+          {
+            $push: {
+              // @ts-ignore
+              like_users: { id, avatar, name },
+            },
+            $inc: {
+              'meta.likes': 1,
+            },
+          }
+        )
+
+        ctx.status = 200
+        ctx.body = { success: true }
+      }
+    } catch (e: any) {
+      ctx.status = 500
+      ctx.body = { success: false, message: e.message }
+    }
+  }
+
+  async cancelLikeArticle(ctx: KoaCtx) {
+    try {
+      const { articleId, id, avatar, name } = getParams(ctx)
+
+      const article = await Article.findById(articleId)
+
+      if (article?.like_users.some((user: any) => user.id === id)) {
+        ctx.status = 401
+        ctx.body = { success: false, msg: '您还未点赞' }
+      } else {
+        await Article.findOneAndUpdate(
+          { id: ctx.request.body.id },
+          {
+            $pull: {
+              // @ts-ignore
+              like_users: { id, avatar, name },
+            },
+            $inc: {
+              'meta.likes': -1,
+            },
+          }
+        )
+
+        ctx.status = 200
+        ctx.body = { success: true }
+      }
+    } catch (e: any) {
+      ctx.body = { success: false, msg: e.message }
+      ctx.status = 500
     }
   }
 }

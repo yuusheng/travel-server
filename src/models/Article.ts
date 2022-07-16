@@ -42,6 +42,17 @@ const articleSchema = new mongoose.Schema({
     },
   ],
 
+  dislike_users: [
+    {
+      id: {
+        type: String,
+        ref: 'users',
+        create_time: { type: Date, default: Date.now },
+      },
+      create_time: { type: String, default: Date.now },
+    },
+  ],
+
   // 其他元信息
   meta: {
     views: { type: Number, default: 0 },

@@ -53,7 +53,6 @@ class UserController {
     let { id, name, avatar, email } = ctx.state.user
     avatar = avatar.slice(2)
     ctx.body = { id, name, avatar, email }
-    console.log(ctx.state.user)
   }
 }
 
