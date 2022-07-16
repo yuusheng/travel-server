@@ -1,13 +1,12 @@
-import { config, requireAuthentication } from './secret'
+import { config } from './secret'
 import { KoaCtx, KoaNext } from '../types'
-import jwt from 'jsonwebtoken'
-
-export function custom(ctx: KoaCtx) {
-  return requireAuthentication.includes(ctx.url) ? false : true
-}
+import jwtGenerate from 'jsonwebtoken'
+import jwt from 'koa-jwt'
 
 export function generateToken(payload: any) {
-  return jwt.sign(payload, config.secret, { expiresIn: config.expiresTime })
+  return jwtGenerate.sign(payload, config.secret, {
+    expiresIn: config.expiresTime,
+  })
 }
 
 export async function jwtErrorHandler(ctx: KoaCtx, next: KoaNext) {
@@ -22,3 +21,5 @@ export async function jwtErrorHandler(ctx: KoaCtx, next: KoaNext) {
     }
   })
 }
+
+export const auth = jwt({ secret: config.secret })

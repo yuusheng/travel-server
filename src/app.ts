@@ -2,23 +2,12 @@ import Koa from 'koa'
 import koaBody from 'koa-body'
 import logger from 'koa-logger'
 import koaStatic from 'koa-static'
-import jwt from 'koa-jwt'
 import router from './routes'
 import path from 'path'
-import { config, custom, jwtErrorHandler } from './utils'
+import { config } from './utils'
 import mongoose from 'mongoose'
 
 const app = new Koa()
-
-app.use(jwtErrorHandler)
-
-app.use(
-  jwt({
-    secret: config.secret,
-  }).unless({
-    custom,
-  })
-)
 
 app
   .use(
