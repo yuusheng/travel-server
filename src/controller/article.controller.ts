@@ -17,7 +17,10 @@ class ArticleController {
       ctx.body = { msg: '文章不存在!' }
     } else {
       const id = ctx.params.id
-      let article = await Article.findOne({ _id: id })
+      let article = await Article.findOne({ _id: id }).populate(
+        'author',
+        'name'
+      )
       if (article) {
         const meta = {
           ...article.meta,

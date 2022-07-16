@@ -1,6 +1,6 @@
-import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-const articleSchema = new mongoose.Schema({
+const articleSchema = new Schema({
   // 标题
   title: { type: String, required: true, validate: /\S+/ },
 
@@ -9,7 +9,12 @@ const articleSchema = new mongoose.Schema({
   keywords: [{ type: String, default: '' }],
 
   // 作者
-  author: { type: String, ref: 'users', required: true, validate: /\S+/ },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'users',
+    required: true,
+    validate: /\S+/,
+  },
 
   // 描述
   desc: { type: String, default: '' },
@@ -32,7 +37,7 @@ const articleSchema = new mongoose.Schema({
   like_users: [
     {
       id: {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'users',
         create_time: { type: Date, default: Date.now },
       },
@@ -45,7 +50,7 @@ const articleSchema = new mongoose.Schema({
   dislike_users: [
     {
       id: {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'users',
         create_time: { type: Date, default: Date.now },
       },
@@ -67,4 +72,4 @@ const articleSchema = new mongoose.Schema({
   update_time: { type: Date, default: Date.now },
 })
 
-export const Article = mongoose.model('article', articleSchema)
+export const Article = model('article', articleSchema)
