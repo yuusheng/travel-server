@@ -1,5 +1,5 @@
-import { profileController } from '../controller'
 import Router from 'koa-router'
+import { profileController } from '../controller'
 
 const router = new Router({ prefix: '/profile' })
 

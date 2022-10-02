@@ -21,4 +21,8 @@ router.post('/like', auth, articleController.likeArticle)
 
 router.post('/cancelLike', auth, articleController.cancelLikeArticle)
 
+router.post('/dislike', auth, articleController.dislikeArticle)
+
+router.post('cancelDislike', auth, articleController.cancelDislikeArticle)
+
 export default router.routes()

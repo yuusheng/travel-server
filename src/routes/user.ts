@@ -1,5 +1,5 @@
-import { auth } from '../utils'
 import Router from 'koa-router'
+import { auth } from '../utils'
 import { userController } from '../controller'
 
 const router = new Router({ prefix: '/users' })

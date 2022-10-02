@@ -1,4 +1,4 @@
-import { KoaCtx } from '../types'
+import type { KoaCtx } from '../types'
 import { Profile } from '../models'
 
 class ProfileController {
@@ -6,13 +6,14 @@ class ProfileController {
     try {
       const profile = await Profile.find({ user: ctx.state.user.id }).populate(
         'user',
-        ['name', 'avatar']
+        ['name', 'avatar'],
       )
       if (profile.length) {
         ctx.status = 200
         ctx.body = profile[0]
       }
-    } catch (e: any) {
+    }
+    catch (e: any) {
       ctx.status = 500
       ctx.body = { msg: e.message }
     }
@@ -31,11 +32,12 @@ class ProfileController {
       const profileUpdate = await Profile.findOneAndUpdate(
         { user: ctx.state.user.id },
         { $set: profileFiles },
-        { new: true }
+        { new: true },
       )
       ctx.body = profileUpdate
       ctx.status = 200
-    } else {
+    }
+    else {
       await new Profile(profileFiles).save().then((profile) => {
         ctx.status = 200
         ctx.body = profile

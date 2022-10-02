@@ -10,7 +10,7 @@ const articleSchema = new Schema({
 
   // 作者
   author: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'users',
     required: true,
     validate: /\S+/,
@@ -39,7 +39,7 @@ const articleSchema = new Schema({
       id: {
         type: Schema.Types.ObjectId,
         ref: 'users',
-        create_time: { type: Date, default: Date.now },
+        // create_time: { type: Date, default: Date.now },
       },
       name: String,
       avatar: { type: String },
@@ -50,9 +50,9 @@ const articleSchema = new Schema({
   dislike_users: [
     {
       id: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'users',
-        create_time: { type: Date, default: Date.now },
+        // create_time: { type: Date, default: Date.now },
       },
       create_time: { type: String, default: Date.now },
     },

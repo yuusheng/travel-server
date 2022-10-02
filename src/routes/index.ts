@@ -1,9 +1,9 @@
 import Router from 'koa-router'
-const router = new Router({ prefix: '/api' })
 
 import user from './user'
 import article from './article'
 import profile from './profile'
+const router = new Router({ prefix: '/api' })
 
 router.get('/', async (ctx) => {
   ctx.body = { msg: 'hello koa-ts' }

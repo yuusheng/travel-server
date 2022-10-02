@@ -1,5 +1,5 @@
-import { KoaCtx } from '../types'
 import path from 'path'
+import type { KoaCtx } from '../types'
 
 class StaticController {
   async publishImg(ctx: KoaCtx) {

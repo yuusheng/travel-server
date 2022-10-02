@@ -1,10 +1,10 @@
 import { Article } from '../models'
-import { KoaCtx } from '../types'
+import type { KoaCtx } from '../types'
 
 function getParams(ctx: KoaCtx, get = false) {
   const articleId = get ? ctx.params.id : ctx.request.body.id
-  let { id, avatar, name }: { id: string; avatar: string; name: string } =
-    ctx.state.user
+  const { id, avatar, name }: { id: string; avatar: string; name: string }
+    = ctx.state.user
 
   return { articleId, id, avatar, name }
 }
@@ -14,11 +14,12 @@ class ArticleController {
     if (!ctx.params.id) {
       ctx.status = 200
       ctx.body = { msg: '文章不存在!' }
-    } else {
+    }
+    else {
       const id = ctx.params.id
-      let article = await Article.findOne({ _id: id }).populate(
+      const article = await Article.findOne({ _id: id }).populate(
         'author',
-        'name'
+        'name',
       )
       if (article) {
         const meta = {
@@ -28,7 +29,8 @@ class ArticleController {
         await Article.updateOne({ _id: id }, { meta }).then((res) => {
           ctx.body = res
         })
-      } else {
+      }
+      else {
         ctx.body = { msg: '文章不存在' }
       }
       ctx.body = article
@@ -36,7 +38,7 @@ class ArticleController {
   }
 
   async publishArticle(ctx: KoaCtx) {
-    let length = ctx.request.body.content.length
+    const length = ctx.request.body.content.length
     const newArticle = new Article(ctx.request.body, length)
     await newArticle
       .save()
@@ -52,15 +54,16 @@ class ArticleController {
     try {
       const articleList = await Article.find(
         { author: ctx.params.userId },
-        '_id title keywords author desc create_time update_time'
+        '_id title keywords author desc create_time update_time',
       ).populate('author', ['name', 'avatar'])
 
-      if (articleList.length) {
+      console.log('userId', ctx.params.userId)
+      if (articleList.length)
         ctx.body = { success: true, articleList }
-      } else {
+      else
         ctx.body = { success: false, msg: '当前未发布内容' }
-      }
-    } catch (e: any) {
+    }
+    catch (e: any) {
       ctx.body = { success: false, msg: e.message }
     }
   }
@@ -72,12 +75,13 @@ class ArticleController {
 
       const liked = article?.like_users.some((user: any) => user.id === id)
       const disliked = article?.dislike_users.some(
-        (user: any) => user.id === id
+        (user: any) => user.id === id,
       )
 
       ctx.body = { success: true, liked, disliked }
       ctx.status = 200
-    } catch (e: any) {
+    }
+    catch (e: any) {
       ctx.status = 500
       ctx.body = { success: false, message: e.message }
     }
@@ -92,24 +96,25 @@ class ArticleController {
       if (article?.like_users.some((user: any) => user.id === id)) {
         ctx.status = 401
         ctx.body = { success: false, msg: '请勿重复点赞' }
-      } else {
+      }
+      else {
         await Article.findOneAndUpdate(
           { id: ctx.request.body.id },
           {
             $push: {
-              // @ts-ignore
               like_users: { id, avatar, name },
             },
             $inc: {
               'meta.likes': 1,
             },
-          }
+          },
         )
 
         ctx.status = 200
         ctx.body = { success: true }
       }
-    } catch (e: any) {
+    }
+    catch (e: any) {
       ctx.status = 500
       ctx.body = { success: false, message: e.message }
     }
@@ -124,24 +129,85 @@ class ArticleController {
       if (article?.like_users.some((user: any) => user.id === id)) {
         ctx.status = 401
         ctx.body = { success: false, msg: '您还未点赞' }
-      } else {
+      }
+      else {
         await Article.findOneAndUpdate(
           { id: ctx.request.body.id },
           {
             $pull: {
-              // @ts-ignore
               like_users: { id, avatar, name },
             },
             $inc: {
               'meta.likes': -1,
             },
-          }
+          },
         )
 
         ctx.status = 200
         ctx.body = { success: true }
       }
-    } catch (e: any) {
+    }
+    catch (e: any) {
+      ctx.body = { success: false, msg: e.message }
+      ctx.status = 500
+    }
+  }
+
+  async dislikeArticle(ctx: KoaCtx) {
+    try {
+      const { articleId, id } = getParams(ctx)
+
+      const article = await Article.findOne({ id: articleId })
+
+      if (article?.dislike_users.some((user: any) => user.id === id)) {
+        ctx.status = 401
+        ctx.body = { success: false, msg: '请勿重复点赞' }
+      }
+      else {
+        await Article.findOneAndUpdate(
+          { id: ctx.request.body.id },
+          {
+            $push: {
+              dislike_users: { id },
+            },
+          },
+        )
+
+        ctx.status = 200
+        ctx.body = { success: true }
+      }
+    }
+    catch (e: any) {
+      ctx.status = 500
+      ctx.body = { success: false, message: e.message }
+    }
+  }
+
+  async cancelDislikeArticle(ctx: KoaCtx) {
+    try {
+      const { articleId, id } = getParams(ctx)
+
+      const article = await Article.findById(articleId)
+
+      if (article?.dislike_users.some((user: any) => user.id === id)) {
+        ctx.status = 401
+        ctx.body = { success: false, msg: '您还未点赞' }
+      }
+      else {
+        await Article.findOneAndUpdate(
+          { id: ctx.request.body.id },
+          {
+            $pull: {
+              dislike_users: { id },
+            },
+          },
+        )
+
+        ctx.status = 200
+        ctx.body = { success: true }
+      }
+    }
+    catch (e: any) {
       ctx.body = { success: false, msg: e.message }
       ctx.status = 500
     }

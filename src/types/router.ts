@@ -1,5 +1,6 @@
-import Koa, { ParameterizedContext } from 'koa'
-import Router from 'koa-router'
+import type { ParameterizedContext } from 'koa'
+import type Koa from 'koa'
+import type Router from 'koa-router'
 
 export type KoaCtx = ParameterizedContext<
   any,

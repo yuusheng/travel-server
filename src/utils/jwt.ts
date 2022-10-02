@@ -1,7 +1,7 @@
-import { config } from './secret'
-import { KoaCtx, KoaNext } from '../types'
 import jwtGenerate from 'jsonwebtoken'
 import jwt from 'koa-jwt'
+import type { KoaCtx, KoaNext } from '../types'
+import { config } from './secret'
 
 export function generateToken(payload: any) {
   return jwtGenerate.sign(payload, config.secret, {
@@ -16,7 +16,8 @@ export async function jwtErrorHandler(ctx: KoaCtx, next: KoaNext) {
       ctx.body = {
         error: err.originalError ? err.originalError.message : err.message,
       }
-    } else {
+    }
+    else {
       throw err
     }
   })

@@ -1,6 +1,6 @@
+import bcrypt from 'bcrypt'
 import type { KoaCtx } from '../types'
 import { User } from '../models'
-import bcrypt from 'bcrypt'
 import { generateToken } from '../utils'
 
 class UserController {
@@ -16,7 +16,8 @@ class UserController {
       if (!user.length) {
         ctx.status = 200
         ctx.body = { success: false, code: 101, msg: '用户不存在' }
-      } else {
+      }
+      else {
         const { id, name, password, avatar, email } = user[0]
         // check password
         const result = bcrypt.compareSync(ctx.request.body.password, password)
@@ -32,9 +33,10 @@ class UserController {
           ctx.status = 200
           ctx.body = {
             success: true,
-            token: 'Bearer ' + token,
+            token: `Bearer ${token}`,
           }
-        } else {
+        }
+        else {
           ctx.status = 200
           ctx.body = {
             success: false,
@@ -43,14 +45,15 @@ class UserController {
           }
         }
       }
-    } catch (e) {
+    }
+    catch (e) {
       ctx.body = { msg: '数据库出错', code: 106, success: false }
-      return
     }
   }
 
   async current(ctx: KoaCtx) {
-    let { id, name, avatar, email } = ctx.state.user
+    const { id, name, email } = ctx.state.user
+    let { avatar } = ctx.state.user
     avatar = avatar.slice(2)
     ctx.body = { id, name, avatar, email }
   }
